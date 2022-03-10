@@ -13,8 +13,8 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
  *
  * All robot mechanisms, including the main hardware map, should extend this abstract class.
  *
- * @version 1.1
- * @since 1.0
+ * @version 1.0
+ * @since 1.0.0-alpha
  *
  * @author Paul Serbanescu (paulserbanescu3@gmail.com)
  */
