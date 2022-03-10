@@ -1,34 +1,39 @@
-apply plugin: 'java'
-apply plugin: 'maven-publish'
-
-group = 'com.github.jitpack'
-version = '2.0'
-
-sourceCompatibility = 1.8 // java 8
-targetCompatibility = 1.8
-
-repositories {
-  mavenCentral()
+configurations {
+    doc { transitive false }
 }
 
-dependencies {
-  implementation 'com.google.guava:guava:29.0-jre'
-}
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:4.2.2"
 
-java {
-	withSourcesJar()
-	withJavadocJar()
-}
-
-publishing {
-    publications {
-        maven(MavenPublication) {
-		from components.java
-        }
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
     }
 }
 
-wrapper {
-    gradleVersion = "7.3.3"
-    distributionType = Wrapper.DistributionType.ALL
+dependencies {
+    // FTC
+    doc 'org.firstinspires.ftc:Hardware:6.2.0'
+    doc 'org.firstinspires.ftc:RobotCore:6.2.0'
+    doc 'org.firstinspires.ftc:FtcCommon:6.2.0'
+    doc 'org.firstinspires.ftc:OnBotJava:6.2.0'
+    doc 'org.firstinspires.ftc:Inspection:6.2.0'
+}
+
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        jcenter() // Warning: this repository is going to shut down soon
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }
