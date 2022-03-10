@@ -19,7 +19,7 @@ releases/
 *.class
 
 !lib/
-!src/
+!StuyFission/src/
 !pictures/
 !vendordeps/
 
