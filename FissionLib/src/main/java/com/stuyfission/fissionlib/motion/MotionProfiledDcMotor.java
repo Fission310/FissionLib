@@ -21,7 +21,7 @@ import com.qualcomm.robotcore.util.RobotLog;
  * @version 1.1
  * @since 1.1.0-alpha
  *
- * @author Paul Serbanescu (paulserbanescu3@gmail.com)
+ * @author Lucas Lee, Paul Serbanescu (paulserbanescu3@gmail.com)
  */
 public abstract class MotionProfiledDcMotor implements DcMotorEx {
 
