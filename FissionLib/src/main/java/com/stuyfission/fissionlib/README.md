@@ -13,21 +13,21 @@ Mechanism<br>
 OpMode
     </p>
 
-### Mechanism
+### `Mechanism`
 All hardware mechanisms on the bot (ex: intake, arm, slides) should extend the Mechanism class
-#### init(HardwareMap hwMap)
+#### `init(HardwareMap hwMap)`
 Where hardware is initialized from the hardware map on the robot phone. Ex:
 `servo = hwMap.get(Servo.class, "servo");`
-#### loop(Gamepad gamepad)
+#### `loop(Gamepad gamepad)`
 Where gamepad inputs are passed to control hardware. Ex:
 ```java
 if (gamepad.y) {
     servo.lift();
 }
 ```
-#### loop(Gamepad gamepad1, Gamepad gamepad2)
+#### `loop(Gamepad gamepad1, Gamepad gamepad2)`
 If using multiple gamepads use this method
-#### telemetry(Telemetry telemetry)
+#### `telemetry(Telemetry telemetry)`
 Telemetry is defined and updated inside opModes, but you can still define what data you want added inside this method. Ex:
 ```java
 telemetry.addData("servo position", servo.getPosition());
