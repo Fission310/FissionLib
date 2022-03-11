@@ -18,7 +18,7 @@ import com.qualcomm.robotcore.util.RobotLog;
  * profiling functionality to a motor. It is designed to make utilizing motion profiling more
  * straightforward and to de-clutter other classes.
  *
- * @version 1.0
+ * @version 1.1
  * @since 1.1.0-alpha
  *
  * @author Paul Serbanescu (paulserbanescu3@gmail.com)
@@ -96,10 +96,10 @@ public abstract class MotionProfiledDcMotor implements DcMotorEx {
     /**
      * Sets PID gains to be used by the PIDF controller
      *
-     * @param kP - proportional gain
-     * @param kI - integral gain
-     * @param kD - derivative gain
-     * @param kF - kF
+     * @param kP proportional gain
+     * @param kI integral gain
+     * @param kD derivative gain
+     * @param kF kF
      */
     public void setPIDCoefficients(double kP, double kI, double kD, double kF) {
         PIDCoefficients coeffs = new PIDCoefficients(kP, kI, kD);
@@ -166,6 +166,17 @@ public abstract class MotionProfiledDcMotor implements DcMotorEx {
      * @param targetPosition inches
      */
     public void setTargetPosition(double targetPosition) {
+        profile = generateProfile(targetPosition);
+        profileTimer.reset();
+    }
+
+    /**
+     * Overrides DcMotor method setTargetPosition(int) to utilize motion profile
+     *
+     * @param targetPosition inches
+     */
+    @Override
+    public void setTargetPosition(int targetPosition) {
         profile = generateProfile(targetPosition);
         profileTimer.reset();
     }
