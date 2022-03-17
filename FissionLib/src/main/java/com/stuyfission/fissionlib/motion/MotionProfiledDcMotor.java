@@ -1,34 +1,23 @@
 package com.stuyfission.fissionlib.motion;
 
+import com.acmerobotics.roadrunner.control.PIDCoefficients;
 import com.acmerobotics.roadrunner.control.PIDFController;
 import com.acmerobotics.roadrunner.profile.MotionProfile;
 import com.acmerobotics.roadrunner.profile.MotionProfileGenerator;
 import com.acmerobotics.roadrunner.profile.MotionState;
-import com.acmerobotics.roadrunner.control.PIDCoefficients;
-
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.RobotLog;
 
-/**
- * MotionProfiledDcMotor is a class that implements the DcMotorEx class and adds on motion
- * profiling functionality to a motor. It is designed to make utilizing motion profiling more
- * straightforward and to de-clutter other classes.
- *
- * @version 1.1
- * @since 1.1.0-alpha
- *
- * @author Lucas Lee, Paul Serbanescu (paulserbanescu3@gmail.com)
- */
-public abstract class MotionProfiledDcMotor implements DcMotorEx {
-
+public class MotionProfiledDcMotor implements DcMotorSimple {
     /**
      * Motor definition for class
      */
-    protected MotionProfiledDcMotor motor;
+    protected DcMotorEx motor;
 
     /**
      * Empirical wheel constants
@@ -49,10 +38,19 @@ public abstract class MotionProfiledDcMotor implements DcMotorEx {
     private MotionProfile profile;
     private final ElapsedTime profileTimer = new ElapsedTime();
 
+
     /**
      * PID controller for motion profile
      */
-    private PIDFController controller;
+    private PIDFController PIDcontroller;
+
+    public MotionProfiledDcMotor(HardwareMap hwMap, String deviceName) {
+        motor = hwMap.get(DcMotorEx.class, deviceName);
+        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    }
+
 
     /**
      * Initializes MotionProfiledDcMotor from the hardware map and sets motor modes needed for
@@ -62,9 +60,9 @@ public abstract class MotionProfiledDcMotor implements DcMotorEx {
      * @param deviceName name on hardware map
      */
     public void initialize(HardwareMap hwMap, String deviceName) {
-        motor = (MotionProfiledDcMotor) hwMap.get(DcMotorEx.class, deviceName);
-        motor.setMode(RunMode.STOP_AND_RESET_ENCODER);
-        motor.setMode(RunMode.RUN_WITHOUT_ENCODER);
+        motor = hwMap.get(DcMotorEx.class, deviceName);
+        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
@@ -103,7 +101,7 @@ public abstract class MotionProfiledDcMotor implements DcMotorEx {
      */
     public void setPIDCoefficients(double kP, double kI, double kD, double kF) {
         PIDCoefficients coeffs = new PIDCoefficients(kP, kI, kD);
-        this.controller = new PIDFController(coeffs, 0, 0, 0, (position, velocity) -> kF);
+        this.PIDcontroller = new PIDFController(coeffs, 0, 0, 0, (position, velocity) -> kF);
     }
 
     /**
@@ -175,7 +173,6 @@ public abstract class MotionProfiledDcMotor implements DcMotorEx {
      *
      * @param targetPosition inches
      */
-    @Override
     public void setTargetPosition(int targetPosition) {
         profile = generateProfile(targetPosition);
         profileTimer.reset();
@@ -189,13 +186,126 @@ public abstract class MotionProfiledDcMotor implements DcMotorEx {
     public void update() {
         MotionState state = profile.get(profileTimer.seconds());
 
-        controller.setTargetPosition(state.getX());
-        controller.setTargetVelocity(state.getV());
-        controller.setTargetAcceleration(state.getA());
+        PIDcontroller.setTargetPosition(state.getX());
+        PIDcontroller.setTargetVelocity(state.getV());
+        PIDcontroller.setTargetAcceleration(state.getA());
 
-        double power = controller.update(getPosition(), getVelocity());
+        double power = PIDcontroller.update(getPosition(), getVelocity());
 
         motor.setPower(power);
     }
 
+
+    // =======================
+    // pass thru functionality
+    // =======================
+
+    /**
+     * Returns an indication of the manufacturer of this device.
+     *
+     * @return the device's manufacturer
+     */
+    @Override
+    public Manufacturer getManufacturer() {
+        return motor.getManufacturer();
+    }
+
+    /**
+     * Returns a string suitable for display to the user as to the type of device.
+     * Note that this is a device-type-specific name; it has nothing to do with the
+     * name by which a user might have configured the device in a robot configuration.
+     *
+     * @return device manufacturer and name
+     */
+    @Override
+    public String getDeviceName() {
+        return motor.getDeviceName();
+    }
+
+    /**
+     * Get connection information about this device in a human readable format
+     *
+     * @return connection info
+     */
+    @Override
+    public String getConnectionInfo() {
+        return motor.getConnectionInfo();
+    }
+
+    /**
+     * Version
+     *
+     * @return get the version of this device
+     */
+    @Override
+    public int getVersion() {
+        return motor.getVersion();
+    }
+
+    /**
+     * Resets the device's configuration to that which is expected at the beginning of an OpMode.
+     * For example, motors will reset the their direction to 'forward'.
+     */
+    @Override
+    public void resetDeviceConfigurationForOpMode() {
+        motor.resetDeviceConfigurationForOpMode();
+    }
+
+    /**
+     * Closes this device
+     */
+    @Override
+    public void close() {
+        motor.close();
+    }
+
+    /**
+     * Sets the logical direction in which this motor operates.
+     *
+     * @param direction the direction to set for this motor
+     * @see #getDirection()
+     */
+    @Override
+    public void setDirection(Direction direction) {
+        motor.setDirection(direction);
+    }
+
+    /**
+     * Returns the current logical direction in which this motor is set as operating.
+     *
+     * @return the current logical direction in which this motor is set as operating.
+     * @see #setDirection(Direction)
+     */
+    @Override
+    public Direction getDirection() {
+        return motor.getDirection();
+    }
+
+    /**
+     * Sets the power level of the motor, expressed as a fraction of the maximum
+     * possible power / speed supported according to the run mode in which the
+     * motor is operating.
+     *
+     * <p>Setting a power level of zero will brake the motor</p>
+     *
+     * @param power the new power level of the motor, a value in the interval [-1.0, 1.0]
+     * @see #getPower()
+     * @see DcMotor#setMode(DcMotor.RunMode)
+     * @see DcMotor#setPowerFloat()
+     */
+    @Override
+    public void setPower(double power) {
+        motor.setPower(power);
+    }
+
+    /**
+     * Returns the current configured power level of the motor.
+     *
+     * @return the current level of the motor, a value in the interval [0.0, 1.0]
+     * @see #setPower(double)
+     */
+    @Override
+    public double getPower() {
+        return motor.getPower();
+    }
 }
