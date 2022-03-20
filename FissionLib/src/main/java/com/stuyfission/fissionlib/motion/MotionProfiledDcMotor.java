@@ -38,6 +38,12 @@ public class MotionProfiledDcMotor implements DcMotorSimple {
     private MotionProfile profile;
     private final ElapsedTime profileTimer = new ElapsedTime();
 
+    /**
+     * Specifically for linear slides, multiplies MAX_VEL and MAX_ACCEL when retracting
+     * retracting is defined as setting target position to a position less than current position
+     */
+    private Double RETRACTION_MULTIPLIER;
+
 
     /**
      * PID controller for motion profile
@@ -49,6 +55,8 @@ public class MotionProfiledDcMotor implements DcMotorSimple {
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        RETRACTION_MULTIPLIER = 1.0;
     }
 
 
@@ -104,6 +112,10 @@ public class MotionProfiledDcMotor implements DcMotorSimple {
         this.PIDcontroller = new PIDFController(coeffs, 0, 0, 0, (position, velocity) -> kF);
     }
 
+    public void setRetractionMultiplier(double multiplier) {
+        this.RETRACTION_MULTIPLIER = multiplier;
+    }
+
     /**
      * Converts motor ticks to inches of rotation
      *
@@ -144,12 +156,12 @@ public class MotionProfiledDcMotor implements DcMotorSimple {
      * @param targetPosition inches
      * @return motion profile
      */
-    public MotionProfile generateProfile(double targetPosition) {
+    public MotionProfile generateProfile(double targetPosition, Double maxVel, Double maxAccel) {
         MotionState start = new MotionState(getPosition(), getVelocity(), 0, 0);
         MotionState goal = new MotionState(targetPosition, 0, 0, 0);
 
         try {
-            return MotionProfileGenerator.generateSimpleMotionProfile(start, goal, MAX_VEL, MAX_ACCEL);
+            return MotionProfileGenerator.generateSimpleMotionProfile(start, goal, maxVel, maxAccel);
         } catch (NullPointerException e) {
             RobotLog.setGlobalErrorMsg("%s motion constraints not set. make sure to setMotionConstraints(double, double) "
                     + getClass().getSimpleName());
@@ -158,13 +170,14 @@ public class MotionProfiledDcMotor implements DcMotorSimple {
     }
 
     /**
-     * Uses {@link #generateProfile(double) generateProfile} to set the motor's target position
+     * Uses {@link #generateProfile(double, Double, Double) generateProfile} to set the motor's target position
      * using the motion profile
      *
      * @param targetPosition inches
      */
     public void setTargetPosition(double targetPosition) {
-        profile = generateProfile(targetPosition);
+        if (targetPosition < getPosition()) { profile = generateProfile(targetPosition, MAX_VEL * RETRACTION_MULTIPLIER, MAX_ACCEL * RETRACTION_MULTIPLIER); }
+        else { profile = generateProfile(targetPosition, MAX_VEL, MAX_ACCEL); }
         profileTimer.reset();
     }
 
@@ -174,8 +187,7 @@ public class MotionProfiledDcMotor implements DcMotorSimple {
      * @param targetPosition inches
      */
     public void setTargetPosition(int targetPosition) {
-        profile = generateProfile(targetPosition);
-        profileTimer.reset();
+        setTargetPosition((double) targetPosition);
     }
 
     /**
