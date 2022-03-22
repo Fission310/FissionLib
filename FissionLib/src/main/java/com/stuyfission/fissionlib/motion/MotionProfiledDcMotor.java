@@ -112,6 +112,10 @@ public class MotionProfiledDcMotor implements DcMotorSimple {
         this.PIDcontroller = new PIDFController(coeffs, 0, 0, 0, (position, velocity) -> kF);
     }
 
+    /**
+     * Sets the retraction multiplier
+     * @param multiplier {@link Double RETRACTION_MULTIPLIER}
+     */
     public void setRetractionMultiplier(double multiplier) {
         this.RETRACTION_MULTIPLIER = multiplier;
     }
