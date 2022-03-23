@@ -324,4 +324,8 @@ public class MotionProfiledDcMotor implements DcMotorSimple {
     public double getPower() {
         return motor.getPower();
     }
+
+    public boolean profileDone(){
+        return profileTimer.seconds() > profile.duration();
+    }
 }
