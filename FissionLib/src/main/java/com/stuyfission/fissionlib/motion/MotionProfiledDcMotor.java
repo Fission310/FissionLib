@@ -185,6 +185,12 @@ public class MotionProfiledDcMotor implements DcMotorSimple {
         profileTimer.reset();
     }
 
+    public void setTargetPosition(double targetPosition, double retractionMultiplier) {
+        if (targetPosition < getPosition()) { profile = generateProfile(targetPosition, MAX_VEL * retractionMultiplier, MAX_ACCEL * RETRACTION_MULTIPLIER); }
+        else { profile = generateProfile(targetPosition, MAX_VEL, MAX_ACCEL); }
+        profileTimer.reset();
+    }
+
     /**
      * Overrides DcMotor method setTargetPosition(int) to utilize motion profile
      *
