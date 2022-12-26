@@ -13,6 +13,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.RobotLog;
 
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
+
 public class MotionProfiledDcMotor implements DcMotorSimple {
     /**
      * Motor definition for class
@@ -329,6 +331,16 @@ public class MotionProfiledDcMotor implements DcMotorSimple {
     @Override
     public double getPower() {
         return motor.getPower();
+    }
+
+
+    /**
+     * Returns the current consumed by this motor.
+     * @param unit current units
+     * @return the current consumed by this motor.
+     */
+    public double getCurrent(CurrentUnit unit) {
+        return motor.getCurrent(unit);
     }
 
     public boolean profileDone(){
