@@ -14,8 +14,8 @@ public class CommandMachine {
         this.currentCommandIndex = 0;
     }
 
-    public CommandMachine addCommandSequence(CommandSequence commandSequence) {
-        CommandSequenceTrigger commandSequenceTrigger = new CommandSequenceTrigger(commandSequence);
+    public CommandMachine addCommandSequence(CommandSequence commandSequence, GamepadStatic.INPUT triggerCondition) {
+        CommandSequenceTrigger commandSequenceTrigger = new CommandSequenceTrigger(commandSequence, triggerCondition);
         commandSequences.add(commandSequenceTrigger);
         return this;
     }
