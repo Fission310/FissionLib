@@ -3,7 +3,7 @@ package com.stuyfission.fissionlib.command;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.stuyfission.fissionlib.input.GamepadStatic;
 
-import java.util.ArrayList;
+import java.util.ArrayList; 
 
 public class CommandMachine {
 
