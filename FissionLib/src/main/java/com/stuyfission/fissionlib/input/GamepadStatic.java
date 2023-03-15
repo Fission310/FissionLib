@@ -6,7 +6,7 @@ public class GamepadStatic {
 
 //    private Gamepad gamepad;
 
-    public enum INPUT {
+    public enum Input {
         NONE,
         DPAD_UP,
         DPAD_DOWN,
@@ -26,7 +26,7 @@ public class GamepadStatic {
 
     public GamepadStatic() {}
 
-    public static INPUT gamepadToEnum(Gamepad gamepad) {
+    public static Input gamepadToEnum(Gamepad gamepad) {
         if (gamepad.dpad_up) return setDPadUp();
         if (gamepad.dpad_down) return setDPadDown();
         if (gamepad.dpad_left) return setDpadLeft();
@@ -42,63 +42,63 @@ public class GamepadStatic {
         if (gamepad.left_stick_button) return setLeftStickButton();
         if (gamepad.right_stick_button) return setRightStickButton();
 
-        return INPUT.NONE;
+        return Input.NONE;
     }
 
-    public static INPUT setDPadUp() {
-        return INPUT.DPAD_UP;
+    public static Input setDPadUp() {
+        return Input.DPAD_UP;
     }
 
-    public static INPUT setDPadDown() {
-        return INPUT.DPAD_DOWN;
+    public static Input setDPadDown() {
+        return Input.DPAD_DOWN;
     }
 
-    public static INPUT setDpadLeft() {
-        return INPUT.DPAD_LEFT;
+    public static Input setDpadLeft() {
+        return Input.DPAD_LEFT;
     }
 
-    public static INPUT setDpadRight() {
-        return INPUT.DPAD_RIGHT;
+    public static Input setDpadRight() {
+        return Input.DPAD_RIGHT;
     }
 
-    public static INPUT setA() {
-        return INPUT.A;
+    public static Input setA() {
+        return Input.A;
     }
 
-    public static INPUT setB() {
-        return INPUT.B;
+    public static Input setB() {
+        return Input.B;
     }
 
-    public static INPUT setX() {
-        return INPUT.X;
+    public static Input setX() {
+        return Input.X;
     }
 
-    public static INPUT setY() {
-        return INPUT.Y;
+    public static Input setY() {
+        return Input.Y;
     }
 
-    public static INPUT setStart() {
-        return INPUT.START;
+    public static Input setStart() {
+        return Input.START;
     }
 
-    public static INPUT setBack() {
-        return INPUT.BACK;
+    public static Input setBack() {
+        return Input.BACK;
     }
 
-    public static INPUT setLeftBumper() {
-        return INPUT.LEFT_BUMPER;
+    public static Input setLeftBumper() {
+        return Input.LEFT_BUMPER;
     }
 
-    public static INPUT setRightBumper() {
-        return INPUT.RIGHT_BUMPER;
+    public static Input setRightBumper() {
+        return Input.RIGHT_BUMPER;
     }
 
-    public static INPUT setLeftStickButton() {
-        return INPUT.LEFT_STICK_BUTTON;
+    public static Input setLeftStickButton() {
+        return Input.LEFT_STICK_BUTTON;
     }
 
-    public static INPUT setRightStickButton() {
-        return INPUT.RIGHT_STICK_BUTTON;
+    public static Input setRightStickButton() {
+        return Input.RIGHT_STICK_BUTTON;
     }
 
 }
