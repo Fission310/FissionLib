@@ -19,6 +19,12 @@ public class CommandSequence {
         return this;
     }
 
+    public CommandSequence addWaitCommand(double seconds) {
+        WaitCommand waitCommand = new WaitCommand(seconds);
+        commands.add(waitCommand);
+        return this;
+    }
+
     public CommandSequence build() {
         commandRunnable = () -> {
             for (CommandImpl command : commands) {
@@ -37,6 +43,12 @@ public class CommandSequence {
         hasCompleted = false;
         commandThread = new Thread(commandRunnable);
         commandThread.start();
+    }
+
+    public void trigger() {
+        if (this.hasCompleted) {
+            this.run();
+        }
     }
     
 }
