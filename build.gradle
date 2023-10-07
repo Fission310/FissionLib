@@ -18,11 +18,11 @@ buildscript {
 
 dependencies {
     // FTC
-    doc 'org.firstinspires.ftc:Hardware:8.0.0'
-    doc 'org.firstinspires.ftc:RobotCore:8.0.0'
-    doc 'org.firstinspires.ftc:FtcCommon:8.0.0'
-    doc 'org.firstinspires.ftc:OnBotJava:8.0.0'
-    doc 'org.firstinspires.ftc:Inspection:8.0.0'
+    doc 'org.firstinspires.ftc:Hardware:9.0.0'
+    doc 'org.firstinspires.ftc:RobotCore:9.0.0'
+    doc 'org.firstinspires.ftc:FtcCommon:9.0.0'
+    doc 'org.firstinspires.ftc:OnBotJava:9.0.0'
+    doc 'org.firstinspires.ftc:Inspection:9.0.0'
 }
 
 
