@@ -45,7 +45,7 @@ public class GamepadStatic {
         return Input.NONE;
     }
 
-    public static boolean isButtonPressed(Gamepad gamepad, INPUT button) {
+    public static boolean isButtonPressed(Gamepad gamepad, Input button) {
         switch (button) {
             case DPAD_UP:
                 return gamepad.dpad_up;
@@ -80,10 +80,6 @@ public class GamepadStatic {
             default:
                 return false;
         }
-    }
-
-    public static Input setDPadDown() {
-        return Input.DPAD_DOWN;
     }
 
     public static Input setDPadDown() {
