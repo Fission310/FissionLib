@@ -15,6 +15,7 @@ build/
 releases/
 
 .project
+.classpath
 
 *.class
 

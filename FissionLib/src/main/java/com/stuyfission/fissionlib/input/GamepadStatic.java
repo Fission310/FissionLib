@@ -45,6 +45,43 @@ public class GamepadStatic {
         return INPUT.NONE;
     }
 
+    public static boolean isButtonPressed(Gamepad gamepad, INPUT button) {
+        switch (button) {
+            case DPAD_UP:
+                return gamepad.dpad_up;
+            case DPAD_DOWN:
+                return gamepad.dpad_down;
+            case DPAD_LEFT:
+                return gamepad.dpad_left;
+            case DPAD_RIGHT:
+                return gamepad.dpad_right;
+            case A:
+                return gamepad.a;
+            case B:
+                return gamepad.b;
+            case X:
+                return gamepad.x;
+            case Y:
+                return gamepad.y;
+            case START:
+                return gamepad.start;
+            case BACK:
+                return gamepad.back;
+            case LEFT_BUMPER:
+                return gamepad.left_bumper;
+            case RIGHT_BUMPER:
+                return gamepad.right_bumper;
+            case LEFT_STICK_BUTTON:
+                return gamepad.left_stick_button;
+            case RIGHT_STICK_BUTTON:
+                return gamepad.right_stick_button;
+            case NONE:
+                return false;
+            default:
+                return false;
+        }
+    }
+
     public static INPUT setDPadUp() {
         return INPUT.DPAD_UP;
     }

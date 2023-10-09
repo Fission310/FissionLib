@@ -27,7 +27,7 @@ public class CommandMachine {
     public void run(Gamepad gamepad) {
         CommandSequenceTrigger currentCommand = commandSequences.get(currentCommandIndex);
 
-        if (currentCommand.triggerCondition == GamepadStatic.gamepadToEnum(gamepad)) {
+        if (GamepadStatic.isButtonPressed(gamepad, currentCommand.triggerCondition)) {
             currentCommand.trigger();
 
             if (currentCommandIndex == commandSequences.size()-1) {
