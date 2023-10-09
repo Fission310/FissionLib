@@ -29,8 +29,8 @@ public class GamepadStatic {
     public static Input gamepadToEnum(Gamepad gamepad) {
         if (gamepad.dpad_up) return setDPadUp();
         if (gamepad.dpad_down) return setDPadDown();
-        if (gamepad.dpad_left) return setDpadLeft();
-        if (gamepad.dpad_right) return setDpadRight();
+        if (gamepad.dpad_left) return setDPadLeft();
+        if (gamepad.dpad_right) return setDPadRight();
         if (gamepad.a) return setA();
         if (gamepad.b) return setB();
         if (gamepad.x) return setX();
@@ -82,15 +82,19 @@ public class GamepadStatic {
         }
     }
 
+    public static Input setDPadUp() {
+        return Input.DPAD_UP;
+    }
+
     public static Input setDPadDown() {
         return Input.DPAD_DOWN;
     }
 
-    public static Input setDpadLeft() {
+    public static Input setDPadLeft() {
         return Input.DPAD_LEFT;
     }
 
-    public static Input setDpadRight() {
+    public static Input setDPadRight() {
         return Input.DPAD_RIGHT;
     }
 
