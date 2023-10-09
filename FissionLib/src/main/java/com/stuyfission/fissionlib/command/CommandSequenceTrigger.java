@@ -5,14 +5,14 @@ import com.stuyfission.fissionlib.input.GamepadStatic;
 public class CommandSequenceTrigger {
 
     private CommandSequence commandSequence;
-    public GamepadStatic.INPUT triggerCondition;
+    public GamepadStatic.Input triggerCondition;
 
     public CommandSequenceTrigger(CommandSequence commandSequence) {
         this.commandSequence = commandSequence;
-        this.triggerCondition = GamepadStatic.INPUT.NONE;
+        this.triggerCondition = GamepadStatic.Input.NONE;
     }
 
-    public CommandSequenceTrigger(CommandSequence commandSequence, GamepadStatic.INPUT triggerCondition) {
+    public CommandSequenceTrigger(CommandSequence commandSequence, GamepadStatic.Input triggerCondition) {
         this.commandSequence = commandSequence;
         this.triggerCondition = triggerCondition;
     }

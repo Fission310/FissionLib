@@ -3,7 +3,7 @@ package com.stuyfission.fissionlib.command;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.stuyfission.fissionlib.input.GamepadStatic;
 
-import java.util.ArrayList; 
+import java.util.ArrayList;
 
 public class CommandMachine {
 
@@ -14,7 +14,7 @@ public class CommandMachine {
         this.currentCommandIndex = 0;
     }
 
-    public CommandMachine addCommandSequence(CommandSequence commandSequence, GamepadStatic.INPUT triggerCondition) {
+    public CommandMachine addCommandSequence(CommandSequence commandSequence, GamepadStatic.Input triggerCondition) {
         CommandSequenceTrigger commandSequenceTrigger = new CommandSequenceTrigger(commandSequence, triggerCondition);
         commandSequences.add(commandSequenceTrigger);
         return this;
@@ -22,6 +22,18 @@ public class CommandMachine {
 
     public CommandMachine build() {
         return this;
+    }
+
+    /**
+     *
+     * @return index of the current command waiting for gamepad input
+     */
+    public int getCurrentCommandIndex() {
+        return currentCommandIndex;
+    }
+
+    public void reset() {
+        currentCommandIndex = 0;
     }
 
     public void run(Gamepad gamepad) {
