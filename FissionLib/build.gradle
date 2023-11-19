@@ -6,12 +6,12 @@ plugins {
 
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 32
 
     defaultConfig {
         minSdkVersion 19
         //noinspection OldTargetApi
-        targetSdkVersion 29
+        targetSdkVersion 32
         versionCode 1
         versionName "1.0"
     }
