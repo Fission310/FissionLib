@@ -32,6 +32,20 @@ public class CommandMachine {
         return currentCommandIndex;
     }
 
+    public void next() {
+        CommandSequenceTrigger currentCommand = commandSequences.get(currentCommandIndex);
+        currentCommand.trigger();
+        skip();
+    }
+
+    public void skip() {
+        if (currentCommandIndex == commandSequences.size() - 1) {
+            currentCommandIndex = 0;
+        } else {
+            currentCommandIndex++;
+        }
+    }
+
     public void reset() {
         currentCommandIndex = 0;
     }
@@ -40,13 +54,7 @@ public class CommandMachine {
         CommandSequenceTrigger currentCommand = commandSequences.get(currentCommandIndex);
 
         if (GamepadStatic.isButtonPressed(gamepad, currentCommand.triggerCondition)) {
-            currentCommand.trigger();
-
-            if (currentCommandIndex == commandSequences.size()-1) {
-                currentCommandIndex = 0;
-            } else {
-                currentCommandIndex++;
-            }
+            next();
         }
     }
 }
