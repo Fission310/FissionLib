@@ -21,7 +21,9 @@ public class GamepadStatic {
         LEFT_BUMPER,
         RIGHT_BUMPER,
         LEFT_STICK_BUTTON,
-        RIGHT_STICK_BUTTON
+        RIGHT_STICK_BUTTON,
+        LEFT_TRIGGER,
+        RIGHT_TRIGGER
     }
 
     public GamepadStatic() {}
@@ -41,6 +43,8 @@ public class GamepadStatic {
         if (gamepad.right_bumper) return setRightBumper();
         if (gamepad.left_stick_button) return setLeftStickButton();
         if (gamepad.right_stick_button) return setRightStickButton();
+        if (gamepad.left_trigger > 0) return setLeftTrigger();
+        if (gamepad.right_trigger > 0) return setRightTrigger();
 
         return Input.NONE;
     }
@@ -75,6 +79,10 @@ public class GamepadStatic {
                 return gamepad.left_stick_button;
             case RIGHT_STICK_BUTTON:
                 return gamepad.right_stick_button;
+            case LEFT_TRIGGER:
+                return gamepad.left_trigger > 0;
+            case RIGHT_TRIGGER:
+                return gamepad.right_trigger > 0;
             case NONE:
                 return false;
             default:
@@ -138,4 +146,11 @@ public class GamepadStatic {
         return Input.RIGHT_STICK_BUTTON;
     }
 
+    public static Input setLeftTrigger() {
+        return Input.RIGHT_STICK_BUTTON;
+    }
+
+    public static Input setRightTrigger() {
+        return Input.RIGHT_STICK_BUTTON;
+    }
 }
