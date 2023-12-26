@@ -9,7 +9,7 @@ android {
     compileSdkVersion 32
 
     defaultConfig {
-        minSdkVersion 19
+        minSdkVersion 24
         //noinspection OldTargetApi
         targetSdkVersion 32
         versionCode 1

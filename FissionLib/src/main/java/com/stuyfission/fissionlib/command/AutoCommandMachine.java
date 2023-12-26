@@ -6,6 +6,7 @@ public class AutoCommandMachine {
 
     private ArrayList<CommandSequence> commandSequences = new ArrayList<>();
     private int currentCommandIndex;
+    private boolean hasCompleted = false;
 
     public AutoCommandMachine() { this.currentCommandIndex = 0; }
 
@@ -18,6 +19,8 @@ public class AutoCommandMachine {
 
     public int getCurrentCommandIndex() { return currentCommandIndex; }
 
+    public boolean hasCompleted() { return hasCompleted; }
+
     public void reset() { currentCommandIndex = 0; }
 
     public void run(boolean driveIsBusy) {
@@ -25,12 +28,12 @@ public class AutoCommandMachine {
 
         if (currentCommand.hasCompleted && !driveIsBusy) {
             currentCommand.trigger();
-        }
-
-        if (currentCommandIndex == commandSequences.size()-1) {
-            currentCommandIndex = 0;
-        } else {
-            currentCommandIndex++;
+            if (currentCommandIndex == commandSequences.size()-1) {
+                currentCommandIndex = 0;
+                hasCompleted = true;
+            } else {
+                currentCommandIndex++;
+            }
         }
     }
 }
