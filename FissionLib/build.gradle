@@ -6,12 +6,12 @@ plugins {
 android {
     namespace 'com.stuyfission.fissionlib'
 
-    compileSdk 34
+    compileSdk 33
 
     defaultConfig {
         minSdkVersion 24
         //noinspection OldTargetApi
-        targetSdkVersion 34
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
     }
