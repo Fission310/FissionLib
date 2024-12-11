@@ -1,31 +1,42 @@
 package com.stuyfission.fissionlib.input;
 
+import java.util.HashMap;
+
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-@Deprecated
-public class GamepadStatic {
+public class GamepadWrapper {
+    private Gamepad gamepad;
+    private HashMap<Input, Boolean> clicked;
 
-    public enum Input {
-        NONE,
-        DPAD_UP,
-        DPAD_DOWN,
-        DPAD_LEFT,
-        DPAD_RIGHT,
-        A,
-        B,
-        X,
-        Y,
-        START,
-        BACK,
-        LEFT_BUMPER,
-        RIGHT_BUMPER,
-        LEFT_STICK_BUTTON,
-        RIGHT_STICK_BUTTON,
-        LEFT_TRIGGER,
-        RIGHT_TRIGGER,
+    public GamepadWrapper(Gamepad gamepad) {
+        this.gamepad = gamepad;
+        this.clicked = new HashMap<>();
+        for (Input input : Input.values()) {
+            clicked.put(input, false);
+        }
     }
 
-    public static boolean isButtonPressed(Gamepad gamepad, Input button) {
+    public void update() {
+        for (Input input : Input.values()) {
+            if (!isPressed(input)) {
+                clicked.put(input, false);
+            }
+        }
+    }
+
+    public boolean isClicked(Input button) {
+        if (isPressed(button)) {
+            if (!clicked.get(button)) {
+                clicked.put(button, true);
+                return true;
+            }
+        } else {
+            clicked.put(button, false);
+        }
+        return false;
+    }
+
+    public boolean isPressed(Input button) {
         switch (button) {
             case DPAD_UP:
                 return gamepad.dpad_up;
