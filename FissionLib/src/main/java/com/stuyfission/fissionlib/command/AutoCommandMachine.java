@@ -21,18 +21,20 @@ public class AutoCommandMachine {
 
     public boolean hasCompleted() { return hasCompleted; }
 
-    public void reset() { currentCommandIndex = 0; }
+    public void reset() {
+        currentCommandIndex = 0;
+        hasCompleted = false;
+    }
 
     public void run(boolean driveIsBusy) {
         CommandSequence currentCommand = commandSequences.get(currentCommandIndex);
 
         if (currentCommand.hasCompleted && !driveIsBusy) {
             currentCommand.trigger();
-            if (currentCommandIndex == commandSequences.size()-1) {
+            currentCommandIndex++;
+            if (currentCommandIndex == commandSequences.size()) {
                 currentCommandIndex = 0;
                 hasCompleted = true;
-            } else {
-                currentCommandIndex++;
             }
         }
     }
