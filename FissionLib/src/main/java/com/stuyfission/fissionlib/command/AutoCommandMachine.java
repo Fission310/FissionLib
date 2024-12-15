@@ -8,7 +8,10 @@ public class AutoCommandMachine {
     private int currentCommandIndex;
     private boolean hasCompleted = false;
 
-    public AutoCommandMachine() { this.currentCommandIndex = 0; }
+    public AutoCommandMachine() {
+        this.currentCommandIndex = 0;
+        commandSequences.add(new CommandSequence().build());
+    }
 
     public AutoCommandMachine addCommandSequence(CommandSequence commandSequence) {
         commandSequences.add(commandSequence);
@@ -21,20 +24,18 @@ public class AutoCommandMachine {
 
     public boolean hasCompleted() { return hasCompleted; }
 
-    public void reset() {
-        currentCommandIndex = 0;
-        hasCompleted = false;
-    }
+    public void reset() { currentCommandIndex = 0; }
 
     public void run(boolean driveIsBusy) {
         CommandSequence currentCommand = commandSequences.get(currentCommandIndex);
 
         if (currentCommand.hasCompleted && !driveIsBusy) {
-            currentCommand.trigger();
             currentCommandIndex++;
             if (currentCommandIndex == commandSequences.size()) {
                 currentCommandIndex = 0;
                 hasCompleted = true;
+            } else {
+                commandSequences.get(currentCommandIndex).trigger();
             }
         }
     }

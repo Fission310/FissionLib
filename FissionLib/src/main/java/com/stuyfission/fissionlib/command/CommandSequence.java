@@ -50,5 +50,4 @@ public class CommandSequence {
             this.run();
         }
     }
-    
 }
