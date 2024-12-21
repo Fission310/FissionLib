@@ -10,7 +10,7 @@ public class AutoCommandMachine {
 
     public AutoCommandMachine() {
         this.currentCommandIndex = 0;
-        commandSequences.add(new CommandSequence().build());
+        commandSequences.add(new CommandSequenceBuilder().build());
     }
 
     public AutoCommandMachine addCommandSequence(CommandSequence commandSequence) {
