@@ -18,13 +18,21 @@ public class AutoCommandMachine {
         return this;
     }
 
-    public AutoCommandMachine build() { return this; }
+    public AutoCommandMachine build() {
+        return this;
+    }
 
-    public int getCurrentCommandIndex() { return currentCommandIndex; }
+    public int getCurrentCommandIndex() {
+        return currentCommandIndex;
+    }
 
-    public boolean hasCompleted() { return hasCompleted; }
+    public boolean hasCompleted() {
+        return hasCompleted;
+    }
 
-    public void reset() { currentCommandIndex = 0; }
+    public void reset() {
+        currentCommandIndex = 0;
+    }
 
     public void run(boolean driveIsBusy) {
         CommandSequence currentCommand = commandSequences.get(currentCommandIndex);

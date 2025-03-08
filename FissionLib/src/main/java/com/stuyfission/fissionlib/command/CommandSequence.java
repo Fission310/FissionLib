@@ -12,7 +12,8 @@ public class CommandSequence {
         commandRunnable = () -> {
             for (CommandImpl command : commands) {
                 command.run();
-                while (!command.completed) { }
+                while (!command.completed) {
+                }
             }
             hasCompleted = true;
         };

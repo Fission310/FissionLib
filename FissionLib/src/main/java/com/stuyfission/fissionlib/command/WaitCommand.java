@@ -1,7 +1,7 @@
 package com.stuyfission.fissionlib.command;
 
 public class WaitCommand extends CommandImpl {
-    
+
     private long waitDuration;
 
     // duration in seconds

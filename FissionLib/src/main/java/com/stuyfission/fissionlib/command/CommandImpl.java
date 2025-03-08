@@ -6,7 +6,8 @@ public class CommandImpl implements Command {
 
     protected boolean completed;
 
-    public CommandImpl() { }
+    public CommandImpl() {
+    }
 
     public CommandImpl(Command command) {
         this.command = command;
@@ -19,6 +20,7 @@ public class CommandImpl implements Command {
         this.completed = true;
     }
 
-    public void update() { }
-    
+    public void update() {
+    }
+
 }

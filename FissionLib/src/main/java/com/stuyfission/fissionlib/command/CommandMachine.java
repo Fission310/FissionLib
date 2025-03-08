@@ -1,60 +1,69 @@
 package com.stuyfission.fissionlib.command;
 
-import com.qualcomm.robotcore.hardware.Gamepad;
-import com.stuyfission.fissionlib.input.GamepadStatic;
-
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.function.Supplier;
 
 public class CommandMachine {
+    public class State {
+        protected class Transition {
+            protected State state;
+            protected CommandSequence sequence;
 
-    private ArrayList<CommandSequenceTrigger> commandSequences = new ArrayList<>();
-    private int currentCommandIndex;
+            protected Transition(State state, CommandSequence sequence) {
+                this.state = state;
+                this.sequence = sequence;
+            }
+        }
 
-    public CommandMachine() {
-        this.currentCommandIndex = 0;
-    }
+        private HashMap<Supplier<Boolean>, Transition> transitions = new HashMap<>();
+        private ArrayList<Command> loops = new ArrayList<>();
 
-    public CommandMachine addCommandSequence(CommandSequence commandSequence, GamepadStatic.Input triggerCondition) {
-        CommandSequenceTrigger commandSequenceTrigger = new CommandSequenceTrigger(commandSequence, triggerCondition);
-        commandSequences.add(commandSequenceTrigger);
-        return this;
-    }
+        public State() {
+        }
 
-    public CommandMachine build() {
-        return this;
-    }
+        protected void addTransition(Supplier<Boolean> condition, State nextState, CommandSequence transition,
+                boolean transitionAtEnd) { // TODO implement switch states after transitioning
+            transitions.put(condition, new Transition(nextState, transition));
+        }
 
-    /**
-     *
-     * @return index of the current command waiting for gamepad input
-     */
-    public int getCurrentCommandIndex() {
-        return currentCommandIndex;
-    }
+        protected void addLoop(Command loop) {
+            loops.add(loop);
+        }
 
-    public void next() {
-        CommandSequenceTrigger currentCommand = commandSequences.get(currentCommandIndex);
-        currentCommand.trigger();
-        skip();
-    }
-
-    public void skip() {
-        if (currentCommandIndex == commandSequences.size() - 1) {
-            currentCommandIndex = 0;
-        } else {
-            currentCommandIndex++;
+        protected State run() {
+            for (Supplier<Boolean> predicate : transitions.keySet()) {
+                if (predicate.get()) {
+                    Transition transition = transitions.get(predicate);
+                    transition.sequence.trigger();
+                    return transition.state;
+                }
+            }
+            for (Command loop : loops) {
+                loop.run();
+            }
+            return this;
         }
     }
 
-    public void reset() {
-        currentCommandIndex = 0;
+    private State currentState;
+
+    public CommandMachine(State startState) {
+        currentState = startState;
     }
 
-    public void run(Gamepad gamepad) {
-        CommandSequenceTrigger currentCommand = commandSequences.get(currentCommandIndex);
+    public CommandMachine addTransition(State initialState, State finalState, Supplier<Boolean> condition,
+            CommandSequence transition, boolean transitionAtEnd) {
+        initialState.addTransition(condition, finalState, transition, transitionAtEnd);
+        return this;
+    }
 
-        if (GamepadStatic.isButtonPressed(gamepad, currentCommand.triggerCondition)) {
-            next();
-        }
+    public CommandMachine addLoop(State state, Command loop) {
+        state.addLoop(loop);
+        return this;
+    }
+
+    public void run() {
+        currentState = currentState.run();
     }
 }

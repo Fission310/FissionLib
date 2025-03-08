@@ -4,5 +4,5 @@ package com.stuyfission.fissionlib.command;
 public interface Command {
 
     public abstract void run();
-    
+
 }
